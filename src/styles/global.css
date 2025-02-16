@@ -1,0 +1,52 @@
+/* Police GrenzeGotisch */
+@font-face {
+    font-family: "GrenzeGotisch";
+    src: url("./assets/font/Grenze_Gotisch/GrenzeGotisch-VariableFont_wght.ttf")
+        format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Police Liter */
+@font-face {
+    font-family: "Liter";
+    src: url("./assets/font/Liter/Liter-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Police Inter (variable) */
+@font-face {
+    font-family: "Inter";
+    src: url("./assets/font/Inter/Inter-VariableFont_opsz,wght.ttf")
+        format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Variante Black de Merriweather */
+@font-face {
+    font-family: "Merriweather Black";
+    src: url("./assets/font/Merriweather/Merriweather-Black.ttf")
+        format("truetype");
+    font-weight: 900; /* Poids Black */
+    font-style: normal;
+}
+
+/* Variante Bold de Merriweather */
+@font-face {
+    font-family: "Merriweather";
+    src: url("./assets/font/Merriweather/Merriweather-Bold.ttf")
+        format("truetype");
+    font-weight: bold; /* Poids Bold */
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Inter", sans-serif;
+}
