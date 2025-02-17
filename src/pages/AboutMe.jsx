@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import { Box, Container, Typography, Grid, Card } from "@mui/material";
-import { motion } from "framer-motion";
+import {
+    Box,
+    Container,
+    Typography,
+    Grid,
+    Card,
+    Modal,
+    IconButton,
+} from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
 import DownloadIcon from "@mui/icons-material/Download";
 import WorkIcon from "@mui/icons-material/Work";
+import CloseIcon from "@mui/icons-material/Close";
 
 const skills = [
     { name: "Python", icon: "/assets/svg/python.svg" },
@@ -19,6 +28,12 @@ const skills = [
     { name: "C", icon: "/assets/svg/C.svg" },
     { name: "SASS", icon: "/assets/svg/sass.svg" },
     { name: "TypeScript", icon: "/assets/svg/typescript.svg" },
+    { name: "Node.js", icon: "/assets/svg/nodejs.svg" },
+    { name: "Express", icon: "/assets/svg/express.svg" },
+    { name: "GitHub", icon: "/assets/svg/github.svg" },
+    { name: "MUI-JS", icon: "/assets/svg/mui.svg" },
+    { name: "Tailwind CSS", icon: "/assets/svg/tailwind.svg" },
+    { name: "MySQL", icon: "/assets/svg/mysql.svg" },
 ];
 
 const experiences = [
@@ -33,6 +48,7 @@ const experiences = [
 
 const AboutMe = () => {
     const [activeSection, setActiveSection] = useState("skills");
+    const [openPreview, setOpenPreview] = useState(false);
 
     const handleDownload = () => {
         window.open("/others/Curriculum-Vitae.pdf", "_blank");
@@ -125,7 +141,7 @@ const AboutMe = () => {
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                onClick={handleDownload}
+                                onClick={() => setOpenPreview(true)}
                                 style={{
                                     background:
                                         "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
@@ -141,7 +157,7 @@ const AboutMe = () => {
                                         "0 4px 15px rgba(33, 150, 243, 0.3)",
                                 }}
                             >
-                                <DownloadIcon /> Download CV
+                                <DownloadIcon /> Preview CV
                             </motion.button>
                         </motion.div>
                     </Box>
@@ -295,6 +311,108 @@ const AboutMe = () => {
                     </Grid>
                 )}
             </motion.div>
+
+            {/* Modal de prévisualisation du CV */}
+            <AnimatePresence>
+                {openPreview && (
+                    <Modal
+                        open={openPreview}
+                        onClose={() => setOpenPreview(false)}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.5 }}
+                            transition={{
+                                duration: 0.3,
+                                ease: "easeInOut",
+                            }}
+                            style={{
+                                position: "relative",
+                                width: "90%",
+                                maxWidth: "800px",
+                                maxHeight: "90vh",
+                                backgroundColor: "rgba(18, 18, 18, 0.95)",
+                                borderRadius: "15px",
+                                padding: "20px",
+                                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+                                border: "1px solid rgba(255, 255, 255, 0.1)",
+                            }}
+                        >
+                            <motion.div
+                                style={{
+                                    position: "absolute",
+                                    top: "10px",
+                                    right: "10px",
+                                    zIndex: 1,
+                                }}
+                            >
+                                <IconButton
+                                    onClick={() => setOpenPreview(false)}
+                                    sx={{ color: "white" }}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </motion.div>
+
+                            <Box
+                                sx={{
+                                    height: "calc(100vh - 200px)",
+                                    overflow: "hidden",
+                                }}
+                            >
+                                <motion.iframe
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                    src="/others/Curriculum-Vitae.pdf"
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: "none" }}
+                                />
+                            </Box>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    marginTop: "20px",
+                                }}
+                            >
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={handleDownload}
+                                    style={{
+                                        background:
+                                            "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+                                        border: "none",
+                                        padding: "12px 24px",
+                                        borderRadius: "25px",
+                                        color: "white",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "8px",
+                                        cursor: "pointer",
+                                        boxShadow:
+                                            "0 4px 15px rgba(33, 150, 243, 0.3)",
+                                    }}
+                                >
+                                    <DownloadIcon /> Download CV
+                                </motion.button>
+                            </motion.div>
+                        </motion.div>
+                    </Modal>
+                )}
+            </AnimatePresence>
         </Container>
     );
 };
