@@ -109,7 +109,7 @@ export default function Page404() {
                 >
                     <Box
                         component="img"
-                        src="/assets/svg/undraw_page-not-found_6wni.svg"
+                        src="/Client/assets/svg/undraw_page_not_found_6wni.svg"
                         alt="404 illustration"
                         sx={{
                             width: "100%",
