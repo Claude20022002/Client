@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Projets from "./pages/Projets";
 import Contact from "./pages/Contact";
 import AboutMe from "./pages/AboutMe";
-
+import Page404 from "./pages/Page404";
 function App() {
     return (
         <Router>
@@ -29,6 +29,7 @@ function App() {
                     <Route path="/projets" element={<Projets />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/about-me" element={<AboutMe />} />
+                    <Route path="*" element={<Page404 />} />
                 </Routes>
             </Box>
         </Router>
