@@ -108,11 +108,16 @@ const AboutMe = () => {
     const [openPreview, setOpenPreview] = useState(false);
     const [selectedCertificate, setSelectedCertificate] = useState(null);
     const count = useMotionValue(0);
-    const rounded = useTransform(count, Math.round);
+    const rounded = useTransform(count, (latest) => {
+        if (latest >= certifications.length) {
+            return `+${certifications.length}`;
+        }
+        return Math.round(latest).toString();
+    });
 
     React.useEffect(() => {
         if (activeSection === "certifications") {
-            const animation = animate(count, certifications.length, {
+            const animation = animate(count, certifications.length + 0.5, {
                 duration: 2,
                 ease: "easeOut",
             });
