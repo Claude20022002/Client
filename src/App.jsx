@@ -7,9 +7,10 @@ import Projets from "./pages/Projets";
 import Contact from "./pages/Contact";
 import AboutMe from "./pages/AboutMe";
 import Page404 from "./pages/Page404";
+
 function App() {
     return (
-        <Router>
+        <Router basename="/Client">
             <Header />
             <Box
                 sx={{
