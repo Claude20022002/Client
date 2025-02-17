@@ -8,10 +8,18 @@ import {
     Modal,
     IconButton,
 } from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+    motion,
+    AnimatePresence,
+    useMotionValue,
+    useTransform,
+    animate,
+} from "framer-motion";
 import DownloadIcon from "@mui/icons-material/Download";
 import WorkIcon from "@mui/icons-material/Work";
 import CloseIcon from "@mui/icons-material/Close";
+import SchoolIcon from "@mui/icons-material/School";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const skills = [
     { name: "Python", icon: "/assets/svg/python.svg" },
@@ -46,9 +54,72 @@ const experiences = [
     },
 ];
 
+const certifications = [
+    {
+        title: "Introduction to Java",
+        institution: "LearnQuest",
+        date: "Décembre 2024",
+        certificate: "/certificates/Coursera-Introduction-java.pdf",
+    },
+    {
+        title: "React Basics",
+        institution: "Meta",
+        date: "Novembre 2024",
+        certificate: "/certificates/Coursera-React-basics.pdf",
+    },
+    {
+        title: "The Structured Query Language (SQL)",
+        institution: "University of Colorado Boulder",
+        date: "Juin 2024",
+        certificate:
+            "/certificates/Coursera-The-structured-query-language-sql.pdf",
+    },
+    {
+        title: "Work Smarter with Microsoft Word",
+        institution: "Microsoft",
+        date: "Juin 2024",
+        certificate:
+            "/certificates/Coursera-Work-smarter-with-microsoft-word.pdf",
+    },
+    {
+        title: "Relational Database Design",
+        institution: "University of Colorado Boulder",
+        date: "Avril 2024",
+        certificate: "/certificates/Coursera-Relational-database-design.pdf",
+    },
+    {
+        title: "Introduction to Python Programming",
+        institution: "University of Pennsylvania",
+        date: "Janvier 2024",
+        certificate:
+            "/certificates/Coursera-Introduction-to-python-programming.pdf",
+    },
+    {
+        title: "Introduction to Web Development",
+        institution: "University of California, Davis",
+        date: "Novembre 2023",
+        certificate:
+            "/certificates/Coursera-Introduction-to-web-development.pdf",
+    },
+];
+
 const AboutMe = () => {
     const [activeSection, setActiveSection] = useState("skills");
     const [openPreview, setOpenPreview] = useState(false);
+    const [selectedCertificate, setSelectedCertificate] = useState(null);
+    const count = useMotionValue(0);
+    const rounded = useTransform(count, Math.round);
+
+    React.useEffect(() => {
+        if (activeSection === "certifications") {
+            const animation = animate(count, certifications.length, {
+                duration: 2,
+                ease: "easeOut",
+            });
+
+            return animation.stop;
+        }
+    }, [activeSection]);
 
     const handleDownload = () => {
         window.open("/others/Curriculum-Vitae.pdf", "_blank");
@@ -166,7 +237,7 @@ const AboutMe = () => {
 
             {/* Navigation des sections */}
             <Box sx={{ display: "flex", justifyContent: "center", mb: 6 }}>
-                {["skills", "experience"].map((section) => (
+                {["skills", "certifications", "experience"].map((section) => (
                     <motion.button
                         key={section}
                         whileHover={{ scale: 1.05 }}
@@ -199,7 +270,7 @@ const AboutMe = () => {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
             >
-                {activeSection === "skills" ? (
+                {activeSection === "skills" && (
                     <Grid container spacing={3} justifyContent="center">
                         {skills.map((skill, index) => (
                             <Grid item key={skill.name}>
@@ -259,51 +330,417 @@ const AboutMe = () => {
                             </Grid>
                         ))}
                     </Grid>
-                ) : (
-                    <Grid container spacing={3}>
-                        {experiences.map((exp, index) => (
-                            <Grid item xs={12} md={4} key={index}>
+                )}
+
+                {activeSection === "certifications" && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            style={{
+                                textAlign: "center",
+                                marginBottom: "2rem",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                gap: "1rem",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "1rem",
+                                    background: "rgba(255, 255, 255, 0.05)",
+                                    padding: "1rem 2rem",
+                                    borderRadius: "15px",
+                                    boxShadow:
+                                        "0 8px 32px rgba(33, 150, 243, 0.1)",
+                                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                                }}
+                            >
+                                <motion.h2
+                                    style={{
+                                        color: "#2196F3",
+                                        fontSize: "3rem",
+                                        margin: 0,
+                                        fontWeight: "bold",
+                                        textShadow:
+                                            "0 2px 4px rgba(33, 150, 243, 0.3)",
+                                    }}
+                                >
+                                    {rounded}
+                                </motion.h2>
                                 <motion.div
-                                    initial={{ opacity: 0, x: -50 }}
+                                    initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: index * 0.2 }}
+                                    transition={{ delay: 2 }}
+                                >
+                                    <Typography
+                                        variant="h5"
+                                        sx={{
+                                            color: "white",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "flex-start",
+                                        }}
+                                    >
+                                        Certifications
+                                        <motion.span
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ delay: 2.5 }}
+                                            style={{
+                                                fontSize: "1rem",
+                                                color: "#21CBF3",
+                                                fontStyle: "italic",
+                                            }}
+                                        >
+                                            with more in progress...
+                                        </motion.span>
+                                    </Typography>
+                                </motion.div>
+                            </Box>
+                        </motion.div>
+
+                        <Grid container spacing={3}>
+                            {certifications.map((cert, index) => (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={6}
+                                    md={4}
+                                    key={cert.title}
+                                >
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 50 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{
+                                            duration: 0.5,
+                                            delay: index * 0.1,
+                                            type: "spring",
+                                            stiffness: 100,
+                                        }}
+                                        whileHover={{
+                                            y: -10,
+                                            transition: { duration: 0.3 },
+                                        }}
+                                    >
+                                        <Card
+                                            sx={{
+                                                minHeight: 280,
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                background:
+                                                    "rgba(255, 255, 255, 0.05)",
+                                                backdropFilter: "blur(10px)",
+                                                border: "1px solid rgba(255, 255, 255, 0.1)",
+                                                borderRadius: "15px",
+                                                padding: "1.5rem",
+                                                transition: "all 0.3s ease",
+                                                position: "relative",
+                                                overflow: "hidden",
+                                                "&::before": {
+                                                    content: '""',
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    background:
+                                                        "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+                                                    opacity: 0,
+                                                    transition:
+                                                        "opacity 0.3s ease",
+                                                    zIndex: 0,
+                                                },
+                                                "&:hover::before": {
+                                                    opacity: 0.1,
+                                                },
+                                                "&:hover": {
+                                                    boxShadow:
+                                                        "0 8px 25px rgba(33, 150, 243, 0.2)",
+                                                },
+                                            }}
+                                        >
+                                            <motion.div
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{
+                                                    delay: index * 0.1 + 0.3,
+                                                    type: "spring",
+                                                    stiffness: 200,
+                                                }}
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    marginBottom: "1rem",
+                                                }}
+                                            >
+                                                <SchoolIcon
+                                                    sx={{
+                                                        fontSize: 50,
+                                                        color: "#2196F3",
+                                                        filter: "drop-shadow(0 2px 4px rgba(33, 150, 243, 0.3))",
+                                                    }}
+                                                />
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ y: 20, opacity: 0 }}
+                                                animate={{ y: 0, opacity: 1 }}
+                                                transition={{
+                                                    delay: index * 0.1 + 0.4,
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="h6"
+                                                    sx={{
+                                                        color: "white",
+                                                        textAlign: "center",
+                                                        mb: 2,
+                                                        fontWeight: "bold",
+                                                        textShadow:
+                                                            "0 2px 4px rgba(0,0,0,0.2)",
+                                                    }}
+                                                >
+                                                    {cert.title}
+                                                </Typography>
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ y: 20, opacity: 0 }}
+                                                animate={{ y: 0, opacity: 1 }}
+                                                transition={{
+                                                    delay: index * 0.1 + 0.5,
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="body1"
+                                                    sx={{
+                                                        color: "#21CBF3",
+                                                        textAlign: "center",
+                                                        mb: 1,
+                                                        fontWeight: "500",
+                                                    }}
+                                                >
+                                                    {cert.institution}
+                                                </Typography>
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ y: 20, opacity: 0 }}
+                                                animate={{ y: 0, opacity: 1 }}
+                                                transition={{
+                                                    delay: index * 0.1 + 0.6,
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="body2"
+                                                    sx={{
+                                                        color: "rgba(255, 255, 255, 0.7)",
+                                                        textAlign: "center",
+                                                        mb: 3,
+                                                    }}
+                                                >
+                                                    {cert.date}
+                                                </Typography>
+                                            </motion.div>
+
+                                            <Box sx={{ flexGrow: 1 }} />
+
+                                            <motion.div
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <IconButton
+                                                    onClick={() =>
+                                                        setSelectedCertificate(
+                                                            cert
+                                                        )
+                                                    }
+                                                    sx={{
+                                                        color: "#2196F3",
+                                                        backgroundColor:
+                                                            "rgba(33, 150, 243, 0.1)",
+                                                        backdropFilter:
+                                                            "blur(4px)",
+                                                        padding: "12px",
+                                                        "&:hover": {
+                                                            backgroundColor:
+                                                                "rgba(33, 150, 243, 0.2)",
+                                                        },
+                                                        transition:
+                                                            "all 0.3s ease",
+                                                    }}
+                                                >
+                                                    <VisibilityIcon
+                                                        sx={{
+                                                            fontSize: "1.5rem",
+                                                        }}
+                                                    />
+                                                </IconButton>
+                                            </motion.div>
+                                        </Card>
+                                    </motion.div>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </>
+                )}
+
+                {activeSection === "experience" && (
+                    <Grid container spacing={3} justifyContent="center">
+                        {experiences.map((experience, index) => (
+                            <Grid item key={experience.title}>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{
+                                        duration: 0.5,
+                                        delay: index * 0.1,
+                                        type: "spring",
+                                        stiffness: 100,
+                                    }}
+                                    whileHover={{
+                                        y: -10,
+                                        transition: { duration: 0.3 },
+                                    }}
                                 >
                                     <Card
                                         sx={{
-                                            p: 3,
+                                            width: 300,
+                                            minHeight: 200,
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "center",
+                                            justifyContent: "center",
                                             background:
                                                 "rgba(255, 255, 255, 0.05)",
                                             backdropFilter: "blur(10px)",
                                             border: "1px solid rgba(255, 255, 255, 0.1)",
                                             borderRadius: "15px",
-                                            height: "100%",
+                                            padding: "2rem",
+                                            position: "relative",
+                                            overflow: "hidden",
+                                            "&::before": {
+                                                content: '""',
+                                                position: "absolute",
+                                                top: 0,
+                                                left: 0,
+                                                width: "100%",
+                                                height: "100%",
+                                                background:
+                                                    "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+                                                opacity: 0,
+                                                transition: "opacity 0.3s ease",
+                                                zIndex: 0,
+                                            },
+                                            "&:hover::before": {
+                                                opacity: 0.1,
+                                            },
+                                            "&:hover": {
+                                                boxShadow:
+                                                    "0 8px 25px rgba(33, 150, 243, 0.2)",
+                                            },
                                         }}
                                     >
-                                        <WorkIcon
-                                            sx={{
-                                                fontSize: 40,
-                                                mb: 2,
-                                                color: "#2196F3",
+                                        <motion.div
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{
+                                                delay: index * 0.1 + 0.3,
+                                                type: "spring",
+                                                stiffness: 200,
                                             }}
-                                        />
-                                        <Typography
-                                            variant="h6"
-                                            sx={{ color: "white", mb: 1 }}
+                                            style={{
+                                                marginBottom: "1.5rem",
+                                            }}
                                         >
-                                            {exp.title}
-                                        </Typography>
-                                        <Typography
-                                            color="text.secondary"
-                                            sx={{ mb: 1 }}
+                                            <WorkIcon
+                                                sx={{
+                                                    fontSize: 50,
+                                                    color: "#2196F3",
+                                                    filter: "drop-shadow(0 2px 4px rgba(33, 150, 243, 0.3))",
+                                                }}
+                                            />
+                                        </motion.div>
+
+                                        <motion.div
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{
+                                                delay: index * 0.1 + 0.4,
+                                            }}
                                         >
-                                            {exp.company}
-                                        </Typography>
-                                        <Typography
-                                            variant="body2"
-                                            sx={{ color: "#21CBF3" }}
+                                            <Typography
+                                                variant="h5"
+                                                sx={{
+                                                    color: "white",
+                                                    fontWeight: "bold",
+                                                    textAlign: "center",
+                                                    mb: 2,
+                                                    textShadow:
+                                                        "0 2px 4px rgba(0,0,0,0.2)",
+                                                }}
+                                            >
+                                                {experience.title}
+                                            </Typography>
+                                        </motion.div>
+
+                                        <motion.div
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{
+                                                delay: index * 0.1 + 0.5,
+                                            }}
                                         >
-                                            {exp.year}
-                                        </Typography>
+                                            <Typography
+                                                variant="h6"
+                                                sx={{
+                                                    color: "#21CBF3",
+                                                    textAlign: "center",
+                                                    mb: 2,
+                                                    fontWeight: "500",
+                                                }}
+                                            >
+                                                {experience.company}
+                                            </Typography>
+                                        </motion.div>
+
+                                        <motion.div
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{
+                                                delay: index * 0.1 + 0.6,
+                                            }}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    background:
+                                                        "rgba(33, 150, 243, 0.1)",
+                                                    padding: "0.5rem 1.5rem",
+                                                    borderRadius: "20px",
+                                                    backdropFilter: "blur(4px)",
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="body1"
+                                                    sx={{
+                                                        color: "rgba(255, 255, 255, 0.7)",
+                                                        textAlign: "center",
+                                                        fontWeight: "500",
+                                                    }}
+                                                >
+                                                    {experience.year}
+                                                </Typography>
+                                            </Box>
+                                        </motion.div>
                                     </Card>
                                 </motion.div>
                             </Grid>
@@ -409,6 +846,72 @@ const AboutMe = () => {
                                     <DownloadIcon /> Download CV
                                 </motion.button>
                             </motion.div>
+                        </motion.div>
+                    </Modal>
+                )}
+            </AnimatePresence>
+
+            {/* Modal pour afficher le certificat */}
+            <AnimatePresence>
+                {selectedCertificate && (
+                    <Modal
+                        open={Boolean(selectedCertificate)}
+                        onClose={() => setSelectedCertificate(null)}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.5 }}
+                            transition={{ duration: 0.3 }}
+                            style={{
+                                position: "relative",
+                                width: "90%",
+                                maxWidth: "800px",
+                                maxHeight: "90vh",
+                                backgroundColor: "rgba(18, 18, 18, 0.95)",
+                                borderRadius: "15px",
+                                padding: "20px",
+                                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+                                border: "1px solid rgba(255, 255, 255, 0.1)",
+                            }}
+                        >
+                            <motion.div
+                                style={{
+                                    position: "absolute",
+                                    top: "10px",
+                                    right: "10px",
+                                    zIndex: 1,
+                                }}
+                            >
+                                <IconButton
+                                    onClick={() => setSelectedCertificate(null)}
+                                    sx={{ color: "white" }}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </motion.div>
+
+                            <Box
+                                sx={{
+                                    height: "calc(100vh - 200px)",
+                                    overflow: "hidden",
+                                }}
+                            >
+                                <motion.iframe
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                    src={selectedCertificate.certificate}
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: "none" }}
+                                />
+                            </Box>
                         </motion.div>
                     </Modal>
                 )}
