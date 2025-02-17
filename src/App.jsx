@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Projets from "./pages/Projets";
 import Contact from "./pages/Contact";
 import AboutMe from "./pages/AboutMe";
+
 function App() {
     return (
         <Router>

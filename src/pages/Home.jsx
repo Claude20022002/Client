@@ -92,7 +92,7 @@ export default function Home() {
                             },
                             fontWeight: "bold",
                             background:
-                                "linear-gradient(90deg, #1a6557, #569d7f, #63b45e, #a4bf85)",
+                                "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
                         }}
@@ -106,13 +106,19 @@ export default function Home() {
                             }}
                         />
                     </Typography>
-                    <Typography variant="h6" sx={{ color: "#fff" }}>
-                        Determined, serious, autonomous and curious. I am
-                        passionate about web development and website creation.
-                        In order to make web development a skill, I keep my
-                        knowledge up to date by taking online courses and
-                        practicing...
-                    </Typography>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 1.2 }}
+                    >
+                        <Typography variant="h6" sx={{ color: "#fff" }}>
+                            Determined, serious, autonomous and curious. I am
+                            passionate about web development and website
+                            creation. In order to make web development a skill,
+                            I keep my knowledge up to date by taking online
+                            courses and practicing...
+                        </Typography>
+                    </motion.div>
                     <Stack
                         sx={{
                             display: "flex",
