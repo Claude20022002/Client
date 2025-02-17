@@ -4,9 +4,9 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import SplitText from "../components/SplitText";
+import SplitText from "../components/splitText/SplitText";
 import Typewriter from "typewriter-effect";
-import "./home.css";
+import "../styles/home.css";
 import { motion } from "framer-motion";
 
 export default function Home() {
