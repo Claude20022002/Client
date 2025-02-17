@@ -5,6 +5,8 @@ import {
     TextField,
     Button,
     Box,
+    Alert,
+    CircularProgress,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import SendIcon from "@mui/icons-material/Send";
@@ -12,8 +14,107 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { useState } from "react";
+import emailjs from "emailjs-com";
 
 export default function Contact() {
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        message: "",
+    });
+    const [status, setStatus] = useState({
+        submitted: false,
+        submitting: false,
+        info: { error: false, msg: null },
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus((prevStatus) => ({ ...prevStatus, submitting: true }));
+
+        try {
+            await emailjs.send(
+                process.env.serviceID,
+                process.env.templateID,
+                {
+                    from_name: formData.name,
+                    from_email: formData.email,
+                    message: formData.message,
+                },
+                process.env.userId
+            );
+
+            setStatus({
+                submitted: true,
+                submitting: false,
+                info: { error: false, msg: "Message sent successfully!" },
+            });
+
+            setFormData({
+                name: "",
+                email: "",
+                message: "",
+            });
+
+            setTimeout(() => {
+                setStatus({
+                    submitted: false,
+                    submitting: false,
+                    info: { error: false, msg: null },
+                });
+            }, 3000);
+        } catch (error) {
+            setStatus({
+                submitted: false,
+                submitting: false,
+                info: {
+                    error: true,
+                    msg: "An error occurred. Please try again later.",
+                },
+            });
+        }
+    };
+
+    const inputVariants = {
+        focus: {
+            scale: 1.02,
+            transition: { duration: 0.2 },
+        },
+    };
+
+    const formVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5,
+                staggerChildren: 0.1,
+            },
+        },
+    };
+
+    const socialVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                delay: i * 0.1,
+                duration: 0.5,
+            },
+        }),
+    };
+
     return (
         <Container maxWidth="md" sx={{ py: 8 }}>
             <motion.div
@@ -32,103 +133,194 @@ export default function Contact() {
                         sx={{
                             width: { xs: "100%", md: "60%" },
                             alignItems: "center",
-                            backgroundColor: "white",
+                            background: "rgba(255, 255, 255, 0.95)",
+                            backdropFilter: "blur(10px)",
                             padding: { xs: "20px", sm: "40px" },
-                            borderRadius: "15px",
-                            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-                            transition: "all 0.3s ease-in-out",
-                            transform:
-                                "perspective(1000px) rotateX(0deg) rotateY(0deg)",
+                            borderRadius: "20px",
+                            boxShadow: "0 8px 32px rgba(33, 150, 243, 0.1)",
+                            transition: "all 0.4s ease-in-out",
                             "&:hover": {
-                                transform:
-                                    "perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-5px)",
-                                boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
+                                transform: "translateY(-5px)",
+                                boxShadow:
+                                    "0 12px 40px rgba(33, 150, 243, 0.2)",
                             },
                         }}
                     >
-                        <Typography
-                            variant="h3"
-                            sx={{
-                                fontWeight: "bold",
-                                background:
-                                    "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-                                backgroundClip: "text",
-                                textFillColor: "transparent",
-                                mb: 2,
-                            }}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5 }}
                         >
-                            Contact Me
-                        </Typography>
-                        <Typography
-                            variant="h6"
-                            color="text.secondary"
-                            textAlign="center"
-                            sx={{ mb: 4 }}
-                        >
-                            Feel free to reach out through the form below.
-                        </Typography>
-                        <Stack
-                            component={motion.form}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                            spacing={3}
-                            width="100%"
-                        >
-                            <TextField
-                                label="Name"
-                                name="name"
-                                required
-                                variant="outlined"
-                                fullWidth
+                            <Typography
+                                variant="h3"
                                 sx={{
-                                    "& .MuiOutlinedInput-root": {
-                                        "&:hover fieldset": {
-                                            borderColor: "#2196F3",
-                                        },
-                                    },
-                                }}
-                            />
-                            <TextField
-                                label="Email"
-                                name="email"
-                                required
-                                variant="outlined"
-                                fullWidth
-                                type="email"
-                            />
-                            <TextField
-                                label="Message"
-                                name="message"
-                                multiline
-                                rows={6}
-                                required
-                                variant="outlined"
-                                fullWidth
-                            />
-                            <Button
-                                component={motion.button}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                type="submit"
-                                variant="contained"
-                                size="large"
-                                endIcon={<SendIcon />}
-                                sx={{
+                                    fontWeight: "bold",
                                     background:
                                         "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-                                    boxShadow:
-                                        "0 3px 5px 2px rgba(33, 203, 243, .3)",
-                                    height: 48,
+                                    backgroundClip: "text",
+                                    WebkitBackgroundClip: "text",
+                                    color: "transparent",
+                                    mb: 2,
+                                    textAlign: "center",
                                 }}
                             >
-                                Send Message
-                            </Button>
-                        </Stack>
+                                Contact Me
+                            </Typography>
+                        </motion.div>
+
+                        <motion.form
+                            variants={formVariants}
+                            initial="hidden"
+                            animate="visible"
+                            onSubmit={handleSubmit}
+                            style={{ width: "100%" }}
+                        >
+                            <Stack spacing={3}>
+                                <motion.div
+                                    variants={inputVariants}
+                                    whileFocus="focus"
+                                >
+                                    <TextField
+                                        label="Name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        required
+                                        variant="outlined"
+                                        fullWidth
+                                        disabled={status.submitting}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root": {
+                                                borderRadius: "12px",
+                                                transition: "all 0.3s ease",
+                                                "&:hover fieldset": {
+                                                    borderColor: "#2196F3",
+                                                    borderWidth: "2px",
+                                                },
+                                                "&.Mui-focused fieldset": {
+                                                    borderColor: "#2196F3",
+                                                    borderWidth: "2px",
+                                                },
+                                            },
+                                        }}
+                                    />
+                                </motion.div>
+
+                                <motion.div
+                                    variants={inputVariants}
+                                    whileFocus="focus"
+                                >
+                                    <TextField
+                                        label="Email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        required
+                                        type="email"
+                                        variant="outlined"
+                                        fullWidth
+                                        disabled={status.submitting}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root": {
+                                                borderRadius: "12px",
+                                                "&:hover fieldset": {
+                                                    borderColor: "#2196F3",
+                                                    borderWidth: "2px",
+                                                },
+                                            },
+                                        }}
+                                    />
+                                </motion.div>
+
+                                <motion.div
+                                    variants={inputVariants}
+                                    whileFocus="focus"
+                                >
+                                    <TextField
+                                        label="Message"
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        multiline
+                                        rows={6}
+                                        required
+                                        variant="outlined"
+                                        fullWidth
+                                        disabled={status.submitting}
+                                        sx={{
+                                            "& .MuiOutlinedInput-root": {
+                                                borderRadius: "12px",
+                                                "&:hover fieldset": {
+                                                    borderColor: "#2196F3",
+                                                    borderWidth: "2px",
+                                                },
+                                            },
+                                        }}
+                                    />
+                                </motion.div>
+
+                                {status.info.msg && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                    >
+                                        <Alert
+                                            severity={
+                                                status.info.error
+                                                    ? "error"
+                                                    : "success"
+                                            }
+                                            sx={{ borderRadius: "12px" }}
+                                        >
+                                            {status.info.msg}
+                                        </Alert>
+                                    </motion.div>
+                                )}
+
+                                <motion.div
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        fullWidth
+                                        size="large"
+                                        disabled={status.submitting}
+                                        endIcon={
+                                            status.submitting ? (
+                                                <CircularProgress size={24} />
+                                            ) : (
+                                                <SendIcon />
+                                            )
+                                        }
+                                        sx={{
+                                            background:
+                                                "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+                                            borderRadius: "12px",
+                                            height: 56,
+                                            textTransform: "none",
+                                            fontSize: "1.1rem",
+                                            fontWeight: 600,
+                                            boxShadow:
+                                                "0 3px 15px rgba(33, 150, 243, 0.3)",
+                                            "&:hover": {
+                                                boxShadow:
+                                                    "0 6px 20px rgba(33, 150, 243, 0.4)",
+                                            },
+                                        }}
+                                    >
+                                        {status.submitting
+                                            ? "Sending..."
+                                            : "Send Message"}
+                                    </Button>
+                                </motion.div>
+                            </Stack>
+                        </motion.form>
 
                         <Stack
                             direction="row"
-                            spacing={2}
+                            spacing={3}
                             sx={{
                                 mt: 4,
                                 pt: 4,
@@ -137,82 +329,37 @@ export default function Contact() {
                                 justifyContent: "center",
                             }}
                         >
-                            <motion.div whileHover={{ scale: 1.2 }}>
-                                <FacebookIcon
-                                    onClick={() =>
-                                        window.open(
-                                            "https://www.facebook.com/share/1Yj7qNMj4b/?mibextid=wwXIfr",
-                                            "_blank"
-                                        )
-                                    }
-                                    sx={{
-                                        cursor: "pointer",
-                                        transition: "all 0.3s ease",
-                                        color: "#666",
-                                        fontSize: "28px",
-                                        "&:hover": {
-                                            color: "#4267B2",
-                                        },
+                            {[
+                                FacebookIcon,
+                                InstagramIcon,
+                                GitHubIcon,
+                                LinkedInIcon,
+                            ].map((Icon, i) => (
+                                <motion.div
+                                    key={i}
+                                    custom={i}
+                                    variants={socialVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    whileHover={{
+                                        scale: 1.2,
+                                        rotate: [0, -10, 10, -10, 0],
+                                        transition: { duration: 0.5 },
                                     }}
-                                />
-                            </motion.div>
-                            <motion.div whileHover={{ scale: 1.2 }}>
-                                <InstagramIcon
-                                    onClick={() =>
-                                        window.open(
-                                            "https://www.instagram.com/kimfuta_lusamote/",
-                                            "_blank"
-                                        )
-                                    }
-                                    sx={{
-                                        cursor: "pointer",
-                                        transition: "all 0.3s ease",
-                                        color: "#666",
-                                        fontSize: "28px",
-                                        "&:hover": {
-                                            color: "#E1306C",
-                                        },
-                                    }}
-                                />
-                            </motion.div>
-                            <motion.div whileHover={{ scale: 1.2 }}>
-                                <GitHubIcon
-                                    onClick={() =>
-                                        window.open(
-                                            "https://github.com/Claude20022002",
-                                            "_blank"
-                                        )
-                                    }
-                                    sx={{
-                                        cursor: "pointer",
-                                        transition: "all 0.3s ease",
-                                        color: "#666",
-                                        fontSize: "28px",
-                                        "&:hover": {
-                                            color: "#333",
-                                        },
-                                    }}
-                                />
-                            </motion.div>
-                            <motion.div whileHover={{ scale: 1.2 }}>
-                                <LinkedInIcon
-                                    onClick={() =>
-                                        window.open(
-                                            "https://www.linkedin.com/in/lusamote-kimfuta-b20000250/",
-                                            "_blank"
-                                        )
-                                    }
-                                    sx={{
-                                        cursor: "pointer",
-                                        transition: "all 0.3s ease",
-                                        color: "#666",
-                                        fontSize: "28px",
-                                        "&:hover": {
-                                            color: "#0077B5",
-                                        },
-                                    }}
-                                />
-                            </motion.div>
+                                >
+                                    <Icon
+                                        sx={{
+                                            cursor: "pointer",
+                                            fontSize: "32px",
+                                            color: "#666",
+                                            transition: "all 0.3s ease",
+                                            "&:hover": {
+                                                color: "#2196F3",
+                                            },
+                                        }}
+                                    />
+                                </motion.div>
+                            ))}
                         </Stack>
                     </Stack>
 

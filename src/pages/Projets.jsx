@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Box,
     Container,
@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 export default function Projets() {
     const [selectedProject, setSelectedProject] = useState(null);
     const [open, setOpen] = useState(false);
+    const [hoveredStates, setHoveredStates] = useState({});
 
     const certifications = [
         {
@@ -146,6 +147,44 @@ export default function Projets() {
         },
     ];
 
+    const handleHoverStart = (projectIndex) => {
+        setHoveredStates((prev) => {
+            const newState = { ...prev };
+            newState[projectIndex] = setInterval(() => {
+                setCurrentImageIndexes((prevIndexes) => ({
+                    ...prevIndexes,
+                    [projectIndex]:
+                        (prevIndexes[projectIndex] + 1) %
+                        certifications[projectIndex].ImagePreview.length,
+                }));
+            }, 2000); // Change image every 2 seconds while hovering
+            return newState;
+        });
+    };
+
+    const handleHoverEnd = (projectIndex) => {
+        if (hoveredStates[projectIndex]) {
+            clearInterval(hoveredStates[projectIndex]);
+        }
+        setHoveredStates((prev) => {
+            const newState = { ...prev };
+            delete newState[projectIndex];
+            return newState;
+        });
+        // Reset to first image when hover ends
+        setCurrentImageIndexes((prev) => ({
+            ...prev,
+            [projectIndex]: 0,
+        }));
+    };
+
+    const [currentImageIndexes, setCurrentImageIndexes] = useState(
+        certifications.reduce((acc, _, index) => {
+            acc[index] = 0;
+            return acc;
+        }, {})
+    );
+
     const handleOpen = (project) => {
         setSelectedProject(project);
         setOpen(true);
@@ -156,6 +195,37 @@ export default function Projets() {
         setSelectedProject(null);
     };
 
+    const cardVariants = {
+        hidden: { opacity: 0, y: 50 },
+        visible: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                delay: i * 0.1,
+                duration: 0.6,
+                ease: "easeOut",
+            },
+        }),
+        hover: {
+            y: -10,
+            transition: {
+                duration: 0.3,
+                ease: "easeInOut",
+            },
+        },
+    };
+
+    const overlayVariants = {
+        hidden: { opacity: 0, scale: 0.9 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                duration: 0.3,
+            },
+        },
+    };
+
     return (
         <Container maxWidth="lg" sx={{ py: 8 }}>
             <motion.div
@@ -164,11 +234,11 @@ export default function Projets() {
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
                 <Typography
-                    variant="h2"
+                    variant="h3"
                     component="h1"
                     align="center"
                     sx={{
-                        mb: 6,
+                        mb: 4,
                         fontWeight: 700,
                         background:
                             "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
@@ -186,100 +256,140 @@ export default function Projets() {
                     variant="h6"
                     align="center"
                     color="text.secondary"
-                    sx={{ mb: 8 }}
+                    sx={{ mb: 6 }}
                 >
                     Discover my web development achievements
                 </Typography>
             </motion.div>
 
-            <Grid container spacing={4}>
+            <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
                 {certifications.map((project, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Grid item xs={12} sm={6} lg={4} key={index}>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
+                            onHoverStart={() => handleHoverStart(index)}
+                            onHoverEnd={() => handleHoverEnd(index)}
                         >
                             <Box
                                 sx={{
                                     position: "relative",
-                                    borderRadius: 2,
+                                    borderRadius: "16px",
                                     overflow: "hidden",
-                                    boxShadow: 3,
-                                    height: 300,
-                                    "&:hover .project-info": {
-                                        opacity: 1,
+                                    boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
+                                    height: { xs: 280, sm: 320, md: 380 },
+                                    backgroundColor: "#fff",
+                                    transition: "all 0.3s ease",
+                                    "&:hover": {
+                                        boxShadow:
+                                            "0 12px 40px rgba(0,0,0,0.2)",
+                                        transform: "translateY(-5px)",
                                     },
                                 }}
                             >
                                 <Box
-                                    component="img"
-                                    src={project.ImagePreview[0].image}
                                     sx={{
-                                        width: "100%",
+                                        position: "relative",
                                         height: "100%",
-                                        objectFit: "cover",
+                                        width: "100%",
                                     }}
-                                />
+                                >
+                                    {project.ImagePreview.map(
+                                        (preview, imgIndex) => (
+                                            <motion.div
+                                                key={imgIndex}
+                                                initial={{ opacity: 0 }}
+                                                animate={{
+                                                    opacity:
+                                                        currentImageIndexes[
+                                                            index
+                                                        ] === imgIndex
+                                                            ? 1
+                                                            : 0,
+                                                    transition: {
+                                                        duration: 0.5,
+                                                    },
+                                                }}
+                                                style={{
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    display:
+                                                        currentImageIndexes[
+                                                            index
+                                                        ] === imgIndex
+                                                            ? "block"
+                                                            : "none",
+                                                }}
+                                            >
+                                                <Box
+                                                    component="img"
+                                                    src={preview.image}
+                                                    sx={{
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        objectFit: "cover",
+                                                    }}
+                                                />
+                                            </motion.div>
+                                        )
+                                    )}
+                                </Box>
+
                                 <Box
-                                    className="project-info"
                                     sx={{
                                         position: "absolute",
-                                        top: 0,
+                                        bottom: 0,
                                         left: 0,
                                         right: 0,
-                                        bottom: 0,
-                                        bgcolor: "rgba(0,0,0,0.8)",
-                                        opacity: 0,
-                                        transition: "opacity 0.3s",
+                                        background:
+                                            "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
                                         p: 2,
-                                        display: "flex",
-                                        flexDirection: "column",
+                                        color: "white",
                                     }}
                                 >
                                     <Typography
                                         variant="h6"
-                                        color="white"
-                                        gutterBottom
+                                        sx={{
+                                            fontWeight: 600,
+                                            mb: 1,
+                                            textShadow:
+                                                "2px 2px 4px rgba(0,0,0,0.3)",
+                                        }}
                                     >
                                         {project.title}
                                     </Typography>
-                                    <Box sx={{ flexGrow: 1 }}>
-                                        <Typography
-                                            variant="body2"
-                                            color="white"
-                                        >
-                                            Technologies used:
-                                        </Typography>
-                                        <Box
-                                            sx={{
-                                                display: "flex",
-                                                flexWrap: "wrap",
-                                                gap: 0.5,
-                                                mt: 1,
-                                            }}
-                                        >
-                                            {project.tools.map((tool, idx) => (
-                                                <motion.div
-                                                    key={idx}
-                                                    whileHover={{ scale: 1.1 }}
-                                                >
-                                                    <Typography
-                                                        variant="caption"
-                                                        sx={{
-                                                            bgcolor:
-                                                                "primary.main",
-                                                            px: 1,
-                                                            py: 0.5,
-                                                            borderRadius: 1,
-                                                        }}
-                                                    >
-                                                        {tool}
-                                                    </Typography>
-                                                </motion.div>
-                                            ))}
-                                        </Box>
+
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            flexWrap: "wrap",
+                                            gap: 0.5,
+                                            mb: 1,
+                                        }}
+                                    >
+                                        {project.tools.map((tool, idx) => (
+                                            <Typography
+                                                key={idx}
+                                                variant="caption"
+                                                sx={{
+                                                    bgcolor:
+                                                        "rgba(255,255,255,0.9)",
+                                                    color: "#000",
+                                                    px: 1,
+                                                    py: 0.5,
+                                                    borderRadius: "8px",
+                                                    fontWeight: 500,
+                                                }}
+                                            >
+                                                {tool}
+                                            </Typography>
+                                        ))}
                                     </Box>
+
                                     <Box
                                         sx={{
                                             display: "flex",
@@ -291,20 +401,38 @@ export default function Projets() {
                                             href={project.repository}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            whileHover={{ scale: 1.1 }}
+                                            whileHover={{ scale: 1.05 }}
                                             style={{
                                                 color: "white",
                                                 textDecoration: "none",
+                                                padding: "4px 12px",
+                                                borderRadius: "8px",
+                                                background:
+                                                    "rgba(255,255,255,0.1)",
+                                                backdropFilter: "blur(4px)",
                                             }}
                                         >
                                             GitHub
                                         </motion.a>
-                                        <IconButton
-                                            onClick={() => handleOpen(project)}
-                                            sx={{ color: "white" }}
-                                        >
-                                            <VisibilityIcon />
-                                        </IconButton>
+                                        <motion.div whileHover={{ scale: 1.1 }}>
+                                            <IconButton
+                                                onClick={() =>
+                                                    handleOpen(project)
+                                                }
+                                                sx={{
+                                                    color: "white",
+                                                    bgcolor:
+                                                        "rgba(255,255,255,0.1)",
+                                                    backdropFilter: "blur(4px)",
+                                                    "&:hover": {
+                                                        bgcolor:
+                                                            "rgba(255,255,255,0.2)",
+                                                    },
+                                                }}
+                                            >
+                                                <VisibilityIcon />
+                                            </IconButton>
+                                        </motion.div>
                                     </Box>
                                 </Box>
                             </Box>
