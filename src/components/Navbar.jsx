@@ -206,17 +206,46 @@ function Navbar(props) {
                                     >
                                         <Button
                                             sx={{
-                                                padding: "10px",
+                                                padding: "10px 20px",
                                                 color: "#fff",
                                                 backgroundColor:
                                                     activeItem === item
                                                         ? "rgba(31, 80, 154, 0.8)"
                                                         : "transparent",
                                                 transition: "all 0.3s ease",
+                                                position: "relative",
+                                                overflow: "hidden",
+                                                "&::before": {
+                                                    content: '""',
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    background:
+                                                        "rgba(31, 80, 154, 0.2)",
+                                                    transform: "scaleX(0)",
+                                                    transformOrigin: "right",
+                                                    transition:
+                                                        "transform 0.3s ease",
+                                                },
                                                 "&:hover": {
                                                     backgroundColor:
                                                         "rgba(31, 80, 154, 0.5)",
+                                                    "&::before": {
+                                                        transform: "scaleX(1)",
+                                                        transformOrigin: "left",
+                                                    },
                                                 },
+                                                "&:focus": {
+                                                    outline:
+                                                        "2px solid #1F509A",
+                                                    outlineOffset: "2px",
+                                                },
+                                                borderRadius: "8px",
+                                                fontWeight: "500",
+                                                letterSpacing: "0.5px",
+                                                textTransform: "none",
                                             }}
                                             onClick={() =>
                                                 handleNavItemClick(item)

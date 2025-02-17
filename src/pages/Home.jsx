@@ -59,7 +59,7 @@ export default function Home() {
                     }}
                 >
                     <SplitText
-                        text="Qui suis-je ?"
+                        text="Who am I ?"
                         className="text-2xl font-semibold box-1"
                         delay={100}
                         animationFrom={{
@@ -102,16 +102,16 @@ export default function Home() {
                                 autoStart: true,
                                 loop: true,
                                 delay: 50,
-                                strings: ["Claude", "Développeur Web Junior"],
+                                strings: ["Claude", "Junior Web Developer"],
                             }}
                         />
                     </Typography>
                     <Typography variant="h6" sx={{ color: "#fff" }}>
-                        Déterminé, sérieux, autonome et curieux. Je suis
-                        passionné par le développement web et la création de
-                        sites web. Afin de faire du développement web une
-                        compétence, je mets à jour mes connaissances en suivant
-                        des cours en ligne et en pratiquant...
+                        Determined, serious, autonomous and curious. I am
+                        passionate about web development and website creation.
+                        In order to make web development a skill, I keep my
+                        knowledge up to date by taking online courses and
+                        practicing...
                     </Typography>
                     <Stack
                         sx={{
