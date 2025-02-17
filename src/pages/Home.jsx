@@ -102,10 +102,7 @@ export default function Home() {
                                 autoStart: true,
                                 loop: true,
                                 delay: 50,
-                                strings: [
-                                    "LUSAMOTE KIMFUTA",
-                                    "Développeur Web Junior",
-                                ],
+                                strings: ["Claude", "Développeur Web Junior"],
                             }}
                         />
                     </Typography>
@@ -226,7 +223,18 @@ export default function Home() {
                     sx={{
                         width: { xs: "100%", sm: "35%" },
                         height: { xs: "auto", sm: "auto", md: "600px" },
-                        borderRadius: "76% 24% 81% 19% / 31% 59% 41% 69%",
+                        position: "relative",
+                        "&::before": {
+                            content: '""',
+                            position: "absolute",
+                            inset: "-10px",
+                            background:
+                                "linear-gradient(45deg, #1a6557, #569d7f, #63b45e, #a4bf85)",
+                            borderRadius: "76% 24% 81% 19% / 31% 59% 41% 69%",
+                            filter: "blur(8px)",
+                            opacity: 0.7,
+                            animation: "rotate 10s linear infinite",
+                        },
                     }}
                 >
                     <motion.div
@@ -238,7 +246,7 @@ export default function Home() {
                             ease: [0, 0.71, 0.2, 1.01],
                         }}
                         whileHover={{
-                            scale: 1.05,
+                            scale: 1.02,
                             transition: { duration: 0.3 },
                         }}
                     >
@@ -247,13 +255,14 @@ export default function Home() {
                             src="/assets/images/IMG_7418.JPG"
                             alt="image"
                             sx={{
+                                position: "relative",
                                 borderRadius:
                                     "76% 24% 81% 19% / 31% 59% 41% 69%",
                                 objectFit: "cover",
                                 width: "100%",
                                 height: "100%",
-                                boxShadow:
-                                    "15px 15px 17px 0 rgba(0, 0, 0, 0.5)",
+                                border: "4px solid rgba(255, 255, 255, 0.1)",
+                                zIndex: 1,
                             }}
                         />
                     </motion.div>

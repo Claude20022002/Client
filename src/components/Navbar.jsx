@@ -15,6 +15,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const drawerWidth = 240;
 const navItems = ["Home", "Projets", "About me", "Contact"];
@@ -133,73 +134,103 @@ function Navbar(props) {
             }}
         >
             <CssBaseline />
-            <AppBar
-                component="nav"
-                sx={{
-                    width: "95%",
-                    backdropFilter: "blur(10px)",
-                    backgroundColor: "transparent",
-                    position: "sticky",
-                    borderRadius: "10px",
-                    height: "100%",
+            <motion.div
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{
+                    duration: 0.8,
+                    type: "spring",
+                    stiffness: 100,
                 }}
+                style={{ width: "95%" }}
             >
-                <Toolbar
+                <AppBar
+                    component="nav"
                     sx={{
-                        display: "flex",
-                        justifyContent: "space-between", // Sépare le logo des liens
-                        alignItems: "center",
+                        width: "100%",
+                        backdropFilter: "blur(10px)",
+                        backgroundColor: "rgba(31, 80, 154, 0.1)",
+                        position: "sticky",
+                        borderRadius: "10px",
+                        height: "100%",
+                        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                        border: "1px solid rgba(255, 255, 255, 0.1)",
                     }}
                 >
-                    {/* Bouton hamburger pour mobile */}
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: "none" } }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-
-                    {/* Logo */}
-                    <Box
-                        component="img"
-                        src="/assets/images/LKCode_transparent-.png"
-                        alt="logo"
+                    <Toolbar
                         sx={{
-                            display: { xs: "block", sm: "block" },
-                            width: "100px",
-                            height: "80px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
                         }}
-                    />
+                    >
+                        {/* Bouton hamburger pour mobile */}
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2, display: { sm: "none" } }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
 
-                    {/* Liens de navigation */}
-                    <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 2 }}>
-                        {navItems.map((item) => (
-                            <Link
-                                to={getPath(item)}
-                                key={item}
-                                style={{ textDecoration: "none" }}
-                            >
-                                <Button
-                                    sx={{
-                                        padding: "10px",
-                                        color: "#fff",
-                                        backgroundColor:
-                                            activeItem === item
-                                                ? "#1F509A"
-                                                : "transparent",
-                                    }}
-                                    onClick={() => handleNavItemClick(item)}
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <Box
+                                component="img"
+                                src="/assets/images/LKCode_transparent-.png"
+                                alt="logo"
+                                sx={{
+                                    display: { xs: "block", sm: "block" },
+                                    width: "100px",
+                                    height: "80px",
+                                }}
+                            />
+                        </motion.div>
+
+                        <Box
+                            sx={{ display: { xs: "none", sm: "flex" }, gap: 2 }}
+                        >
+                            {navItems.map((item) => (
+                                <motion.div
+                                    key={item}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.95 }}
                                 >
-                                    {item}
-                                </Button>
-                            </Link>
-                        ))}
-                    </Box>
-                </Toolbar>
-            </AppBar>
+                                    <Link
+                                        to={getPath(item)}
+                                        style={{ textDecoration: "none" }}
+                                    >
+                                        <Button
+                                            sx={{
+                                                padding: "10px",
+                                                color: "#fff",
+                                                backgroundColor:
+                                                    activeItem === item
+                                                        ? "rgba(31, 80, 154, 0.8)"
+                                                        : "transparent",
+                                                transition: "all 0.3s ease",
+                                                "&:hover": {
+                                                    backgroundColor:
+                                                        "rgba(31, 80, 154, 0.5)",
+                                                },
+                                            }}
+                                            onClick={() =>
+                                                handleNavItemClick(item)
+                                            }
+                                        >
+                                            {item}
+                                        </Button>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+            </motion.div>
 
             {/* Drawer pour mobile */}
             <nav>
