@@ -72,14 +72,20 @@ function Navbar(props) {
                 textAlign: "center",
                 background: "rgb(51 53 117 / 98%)",
                 color: "#fff",
+                height: "100%",
             }}
         >
-            <Typography
-                variant="h6"
-                sx={{ my: 2, fontFamily: "GrenzeGotisch" }}
-            >
-                🌱LKCode
-            </Typography>
+            <Box
+                component="img"
+                src="/assets/images/LKCode_transparent-.png"
+                alt="logo"
+                sx={{
+                    display: "block",
+                    width: "100px",
+                    height: "80px",
+                    margin: "10px auto",
+                }}
+            />
             <Divider />
             <List>
                 {navItems.map((item) => (
@@ -93,8 +99,10 @@ function Navbar(props) {
                             }}
                         >
                             <ListItemButton
+                                className="drawerNavItem"
                                 sx={{
                                     textAlign: "center",
+                                    height: "100%",
                                     backgroundColor:
                                         activeItem === item
                                             ? "#1F509A"
@@ -160,7 +168,7 @@ function Navbar(props) {
                         src="/assets/images/LKCode_transparent-.png"
                         alt="logo"
                         sx={{
-                            display: { xs: "none", sm: "block" },
+                            display: { xs: "block", sm: "block" },
                             width: "100px",
                             height: "80px",
                         }}

@@ -7,6 +7,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import SplitText from "../components/SplitText/SplitText";
 import Typewriter from "typewriter-effect";
 import "./home.css";
+import { motion } from "framer-motion";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -223,18 +224,34 @@ export default function Home() {
                         borderRadius: "76% 24% 81% 19% / 31% 59% 41% 69%",
                     }}
                 >
-                    <Box
-                        component="img"
-                        src="/assets/images/IMG_7418.JPG"
-                        alt="image"
-                        sx={{
-                            borderRadius: "76% 24% 81% 19% / 31% 59% 41% 69%",
-                            objectFit: "cover",
-                            width: "100%",
-                            height: "100%",
-                            boxShadow: "15px 15px 17px 0 rgba(0, 0, 0, 0.5)",
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                            duration: 0.8,
+                            delay: 0.5,
+                            ease: [0, 0.71, 0.2, 1.01],
                         }}
-                    />
+                        whileHover={{
+                            scale: 1.05,
+                            transition: { duration: 0.3 },
+                        }}
+                    >
+                        <Box
+                            component="img"
+                            src="/assets/images/IMG_7418.JPG"
+                            alt="image"
+                            sx={{
+                                borderRadius:
+                                    "76% 24% 81% 19% / 31% 59% 41% 69%",
+                                objectFit: "cover",
+                                width: "100%",
+                                height: "100%",
+                                boxShadow:
+                                    "15px 15px 17px 0 rgba(0, 0, 0, 0.5)",
+                            }}
+                        />
+                    </motion.div>
                 </Box>
             </Stack>
         </Stack>
