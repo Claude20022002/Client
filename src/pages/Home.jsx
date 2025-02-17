@@ -20,12 +20,15 @@ export default function Home() {
         <Stack
             className="home"
             sx={{
-                marginTop: "10px",
+                marginTop: { xs: "20px", sm: "40px" },
                 boxSizing: "border-box",
                 overflow: "hidden",
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 alignItems: "center",
                 width: "100%",
+                maxWidth: "1200px",
+                mx: "auto",
+                pb: { xs: "40px", sm: "60px" },
             }}
         >
             <Stack
@@ -34,12 +37,14 @@ export default function Home() {
                 sx={{
                     width: "100%",
                     display: "flex",
-                    flexDirection: "row",
+                    flexDirection: { xs: "column", sm: "row" },
                     alignItems: "center",
-                    justifyContent: "center",
-                    flexWrap: "wrap",
-                    gap: "20px",
-                    padding: { xs: "0 20px", sm: "0 20px" },
+                    justifyContent: "space-between",
+                    gap: { xs: "40px", sm: "20px" },
+                    padding: {
+                        xs: "20px 16px",
+                        sm: "40px 24px",
+                    },
                 }}
             >
                 {/* Texte et CTA */}

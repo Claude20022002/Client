@@ -13,13 +13,14 @@ function App() {
             <Box
                 sx={{
                     margin: "0",
-                    padding: "0",
+                    padding: "0 16px",
                     width: "100%",
-                    height: "100%",
+                    minHeight: "100vh",
                     boxSizing: "border-box",
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "flex-start",
                     alignItems: "center",
+                    overflow: "hidden",
                 }}
             >
                 <Routes>

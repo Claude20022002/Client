@@ -1,7 +1,17 @@
 * {
     z-index: 10;
+    box-sizing: border-box;
 }
 
 .home {
-    height: 100%;
+    min-height: calc(
+        100vh - 120px
+    ); /* Hauteur minimale en tenant compte du header */
+    position: relative;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Empêche le scroll horizontal */
 }

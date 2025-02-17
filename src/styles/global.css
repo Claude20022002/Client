@@ -41,6 +41,10 @@
     font-weight: bold; /* Poids Bold */
     font-style: normal;
 }
+#root {
+    height: 100%;
+    z-index: 9999;
+}
 
 * {
     margin: 0;
@@ -54,6 +58,7 @@ body {
 body {
     overflow-x: hidden;
     overflow-y: scroll;
+    height: 100vh;
 }
 
 .example {
