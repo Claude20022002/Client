@@ -8,6 +8,7 @@ export default function Header() {
             className="header"
             sx={{
                 width: "100%",
+                marginBottom: "10px",
             }}
         >
             <Navbar />

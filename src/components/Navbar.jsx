@@ -14,22 +14,54 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom"; // Import de React Router
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ["Accueil", "Projets", "Contact"];
+const navItems = ["Home", "Projets", "About me", "Contact"];
 
 function Navbar(props) {
-    const { window } = props;
+    // Utilise la prop window si fournie, sinon l'objet global window
+    const { window: windowProp } = props;
+    const navWindow = windowProp || window;
+
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const [activeItem, setActiveItem] = React.useState("Accueil");
+
+    // Initialiser activeItem en fonction de l'URL actuelle
+    const [activeItem, setActiveItem] = React.useState(() => {
+        const path = navWindow.location.pathname;
+        if (path === "/") return "Home";
+        return path.substring(1).charAt(0).toUpperCase() + path.substring(2);
+    });
+
+    // Mettre à jour activeItem lors des changements d'URL
+    React.useEffect(() => {
+        const path = navWindow.location.pathname;
+        if (path === "/") {
+            setActiveItem("Home");
+        } else {
+            const page =
+                path.substring(1).charAt(0).toUpperCase() + path.substring(2);
+            setActiveItem(page);
+        }
+    }, [navWindow.location.pathname]);
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
 
     const handleNavItemClick = (item) => {
-        setActiveItem(item); // Mettre à jour l'élément actif
+        setActiveItem(item);
+    };
+
+    const getPath = (item) => {
+        switch (item) {
+            case "Home":
+                return "/";
+            case "About me":
+                return "/about-me";
+            default:
+                return `/${item.toLowerCase()}`;
+        }
     };
 
     const drawer = (
@@ -40,7 +72,6 @@ function Navbar(props) {
                 textAlign: "center",
                 background: "rgb(51 53 117 / 98%)",
                 color: "#fff",
-                height: "100%",
             }}
         >
             <Typography
@@ -53,18 +84,27 @@ function Navbar(props) {
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton
-                            sx={{
-                                textAlign: "center",
-                                backgroundColor:
-                                    activeItem === item
-                                        ? "#1F509A"
-                                        : "transparent",
+                        <Link
+                            to={getPath(item)}
+                            style={{
+                                textDecoration: "none",
+                                width: "100%",
+                                color: "#fff",
                             }}
-                            onClick={() => handleNavItemClick(item)}
                         >
-                            <ListItemText primary={item} />
-                        </ListItemButton>
+                            <ListItemButton
+                                sx={{
+                                    textAlign: "center",
+                                    backgroundColor:
+                                        activeItem === item
+                                            ? "#1F509A"
+                                            : "transparent",
+                                }}
+                                onClick={() => handleNavItemClick(item)}
+                            >
+                                <ListItemText primary={item} />
+                            </ListItemButton>
+                        </Link>
                     </ListItem>
                 ))}
             </List>
@@ -72,7 +112,7 @@ function Navbar(props) {
     );
 
     const container =
-        window !== undefined ? () => window().document.body : undefined;
+        windowProp !== undefined ? () => windowProp().document.body : undefined;
 
     return (
         <Box
@@ -88,14 +128,22 @@ function Navbar(props) {
             <AppBar
                 component="nav"
                 sx={{
-                    width: "95%", // Occupation de 95% de la largeur du parent
-                    backdropFilter: "blur(10px)", // Effet de flou
-                    backgroundColor: "transparent", // Couleur de fond transparente
-                    position: "sticky", // Garder la navbar en haut lors du défilement
+                    width: "95%",
+                    backdropFilter: "blur(10px)",
+                    backgroundColor: "transparent",
+                    position: "sticky",
                     borderRadius: "10px",
+                    height: "100%",
                 }}
             >
-                <Toolbar>
+                <Toolbar
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between", // Sépare le logo des liens
+                        alignItems: "center",
+                    }}
+                >
+                    {/* Bouton hamburger pour mobile */}
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -105,30 +153,34 @@ function Navbar(props) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography
-                        variant="h6"
-                        component="div"
+
+                    {/* Logo */}
+                    <Box
+                        component="img"
+                        src="/assets/images/LKCode_transparent-.png"
+                        alt="logo"
                         sx={{
-                            flexGrow: 1,
                             display: { xs: "none", sm: "block" },
-                            fontFamily: "GrenzeGotisch",
+                            width: "100px",
+                            height: "80px",
                         }}
-                    >
-                        🌱LKCode
-                    </Typography>
-                    <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                    />
+
+                    {/* Liens de navigation */}
+                    <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 2 }}>
                         {navItems.map((item) => (
                             <Link
-                                to={`/${item.toLowerCase()}`}
+                                to={getPath(item)}
                                 key={item}
                                 style={{ textDecoration: "none" }}
                             >
                                 <Button
                                     sx={{
+                                        padding: "10px",
                                         color: "#fff",
                                         backgroundColor:
                                             activeItem === item
-                                                ? "red"
+                                                ? "#1F509A"
                                                 : "transparent",
                                     }}
                                     onClick={() => handleNavItemClick(item)}
@@ -140,6 +192,8 @@ function Navbar(props) {
                     </Box>
                 </Toolbar>
             </AppBar>
+
+            {/* Drawer pour mobile */}
             <nav>
                 <Drawer
                     container={container}
@@ -147,7 +201,7 @@ function Navbar(props) {
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
                     ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
+                        keepMounted: true, // Pour de meilleures performances sur mobile
                     }}
                     sx={{
                         display: { xs: "block", sm: "none" },
