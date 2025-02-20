@@ -170,7 +170,7 @@ export default function Projets() {
             ImagePreview: [
                 {
                     page: 1,
-                    image: "/projets/weatherplan/page1.jpg",
+                    image: "/projets/weatherplan/page1.png",
                 },
             ],
         },
