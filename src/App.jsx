@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Container, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Projets from "./pages/Projets";

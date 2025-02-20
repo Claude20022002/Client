@@ -65,6 +65,8 @@ export default function Projets() {
                 "CSS",
                 "PhpMyAdmin",
                 "WampServer",
+                "Perenual API",
+                "Trefle API",
             ],
             repository: "https://github.com/Claude20022002/GreenConvert",
             ImagePreview: [
@@ -108,7 +110,16 @@ export default function Projets() {
         },
         {
             title: "MyAnimeList",
-            tools: ["React JS", "Node.js", "MongoDB", "Express", "MUI", "CSS"],
+            tools: [
+                "React JS",
+                "Node.js",
+                "MongoDB",
+                "Express",
+                "MUI",
+                "CSS",
+                "axios",
+                "Jikan API",
+            ],
             repository: "https://github.com/Claude20022002/MyAnime",
             ImagePreview: [
                 {
