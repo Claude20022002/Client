@@ -156,6 +156,24 @@ export default function Projets() {
                 },
             ],
         },
+        {
+            title: "weatherPlan",
+            tools: [
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "OpenWeatherMap API",
+                "axios",
+                "framer-motion",
+            ],
+            repository: "https://github.com/Claude20022002/weatherPlan",
+            ImagePreview: [
+                {
+                    page: 1,
+                    image: "/projets/weatherplan/page1.jpg",
+                },
+            ],
+        },
     ];
 
     const handleHoverStart = (projectIndex) => {
