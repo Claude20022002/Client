@@ -40,17 +40,21 @@ export default function Contact() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus((prevStatus) => ({ ...prevStatus, submitting: true }));
+        console.log("Service ID:", import.meta.env.VITE_EMAILJS_SERVICE_ID);
+        console.log("Template ID:", import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
+        console.log("User ID:", import.meta.env.VITE_EMAILJS_USER_ID);
+        console.log("Form Data:", formData);
 
         try {
             await emailjs.send(
-                import.meta.env.serviceID,
-                import.meta.env.templateID,
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
                 {
                     from_name: formData.name,
                     from_email: formData.email,
                     message: formData.message,
                 },
-                import.meta.env.userId
+                import.meta.env.VITE_EMAILJS_USER_ID
             );
 
             setStatus({
