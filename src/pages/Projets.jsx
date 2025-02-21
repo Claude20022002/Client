@@ -186,7 +186,7 @@ export default function Projets() {
                         (prevIndexes[projectIndex] + 1) %
                         certifications[projectIndex].ImagePreview.length,
                 }));
-            }, 10000); // Change image every 2 seconds while hovering
+            }, 30000); // Change image every 2 seconds while hovering
             return newState;
         });
     };
