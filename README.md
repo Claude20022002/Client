@@ -5,8 +5,6 @@
 # Structure du projet :
 
 -   Client
--   Server
--   Shared
 
 # Client
 
