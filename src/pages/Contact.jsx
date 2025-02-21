@@ -43,14 +43,14 @@ export default function Contact() {
 
         try {
             await emailjs.send(
-                process.env.serviceID,
-                process.env.templateID,
+                import.meta.env.serviceID,
+                import.meta.env.templateID,
                 {
                     from_name: formData.name,
                     from_email: formData.email,
                     message: formData.message,
                 },
-                process.env.userId
+                import.meta.env.userId
             );
 
             setStatus({
