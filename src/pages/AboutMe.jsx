@@ -45,16 +45,23 @@ const skills = [
 ];
 
 const experiences = [
-    { year: "2024", title: "Telemarketer", company: "MD CALLCENTER" },
     { year: "2023", title: "Technical Assistant", company: "STI Company" },
+    { year: "2024", title: "Telemarketer", company: "MD CALLCENTER" },
     {
-        year: "2023-2024",
+        year: "2023-2025",
         title: "Active Member",
         company: "HESTIM Code Masters",
     },
 ];
 
 const certifications = [
+    {
+        title: "Programming Foundations with JavaScript, HTML and CSS",
+        institution: "Duke University",
+        date: "Février 2025",
+        certificate:
+            "/certificates/Coursera-Programming-foundations-with_javascript-html-and-css.pdf",
+    },
     {
         title: "Introduction to Java",
         institution: "LearnQuest",

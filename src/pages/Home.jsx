@@ -131,7 +131,7 @@ export default function Home() {
                     >
                         <Button
                             onClick={() => navigate("/projets")}
-                            variant="outlined"
+                            variant="contained"
                             color="primary"
                             sx={{
                                 padding: "10px",
